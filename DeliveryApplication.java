@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 class User{
     Scanner sc;
     private String username;
@@ -132,13 +133,29 @@ class Products{
         boolean idfound=false;
         for(Products p : food){
         if(p.id==choice1){
+        while(true){
         System.out.println("How many of "+p.name+"'s would you like?");
+        try{
         quantity = DeliveryApplication.sc.nextInt();
+        if(quantity==0){
+            System.out.print("");
+            idfound = true;
+            break;
+        }
+        else{
         System.out.println("--> "+quantity +" "+p.name+" added to cart!");
         Cart.UserCart.add(new Cart(quantity,p.name,p.price));
         idfound = true;
         break;
         }
+        }
+        catch( InputMismatchException e){
+            System.out.println("Choose a number only!");
+            DeliveryApplication.sc.nextLine();
+            continue;
+        }
+    }
+    }
     }
         if(!idfound){
             System.out.println("Invalid choice! Choose again.");
@@ -160,12 +177,28 @@ class Products{
         boolean idfound=false;
         for(Products p : electronics){
         if(p.id==choice1){
+        while(true){
         System.out.println("How many of "+p.name+"'s would you like?");
+        try{
         quantity = DeliveryApplication.sc.nextInt();
+        if(quantity==0){
+            System.out.print("");
+            idfound = true;
+            break;
+        }
+        else{
         System.out.println("--> "+quantity +" "+p.name+" added to cart!");
         Cart.UserCart.add(new Cart(quantity,p.name,p.price));
         idfound = true;
         break;
+        }
+        }
+        catch( InputMismatchException e){
+            System.out.println("Choose a number only!");
+            DeliveryApplication.sc.nextLine();
+            continue;
+        }
+    }
         }
     }
         if(!idfound){
@@ -187,13 +220,29 @@ public static void DisplayBodyAndSkinMenu(){
         choice1 = DeliveryApplication.sc.nextInt();
         boolean idfound=false;
         for(Products p : bodyandskin){
-        if(p.id==choice1){
-        System.out.println("How many of "+p.name+"'s would you like?");
-        quantity = DeliveryApplication.sc.nextInt();
-        System.out.println("--> "+quantity +" "+p.name+" added to cart!");
-        Cart.UserCart.add(new Cart(quantity,p.name,p.price));
-        idfound = true;
-        break;
+            if(p.id==choice1){
+            while(true){
+                System.out.println("How many of "+p.name+"'s would you like?");
+                try{
+                quantity = DeliveryApplication.sc.nextInt();
+                if(quantity==0){
+                    System.out.print("");
+                    idfound = true;
+                    break;
+                }
+                else {
+                  System.out.println("--> "+quantity +" "+p.name+" added to cart!");
+                    Cart.UserCart.add(new Cart(quantity,p.name,p.price));
+                    idfound = true;
+                    break;  
+                }
+            }
+            catch (InputMismatchException e){
+                System.out.println("Choose a number only!");
+                DeliveryApplication.sc.nextLine();
+                continue;
+            }
+            }
         }
     }
         if(!idfound){
@@ -220,8 +269,8 @@ class Cart{
         int newprice=0;
         System.out.println("--------------------Your Cart------------------");
         for (Cart c : UserCart){
-            System.out.println(Products.quantity +" "+ c.name+ ","+" Rs." +c.price);
-            newprice = newprice + (Products.quantity * c.price);
+            System.out.println(c.quantity +" "+ c.name+ ","+" Rs." +c.price);
+            newprice = newprice + (c.quantity * c.price);
         }
         System.out.println("want to add anything else? type yes or no only.");
         while(true){
@@ -252,6 +301,7 @@ public class DeliveryApplication{
         Products.food.add(new Products("Lays indian masala",10));
         Products.food.add(new Products("Lays korean flavour",10));
         Products.food.add(new Products("Bingo Tooyumm",35));
+        Products.food.add(new Products("Pringles Chilli",99));
 
         Products.electronics.add(new Products("dell laptop",76000));
         Products.electronics.add(new Products("mouse",1499));
